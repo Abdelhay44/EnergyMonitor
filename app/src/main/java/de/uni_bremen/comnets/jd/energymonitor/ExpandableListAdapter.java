@@ -16,8 +16,8 @@ import java.util.List;
  * @author Jens Dede, jd@comnets.uni-bremen.de
  */
 public class ExpandableListAdapter extends BaseExpandableListAdapter {
-    // Log tag for error logging
-    public static final String LOG_TAG = "ExpandableListAdapter";
+        // Log tag for error logging
+        public static final String LOG_TAG = "ExpandableListAdapter";
 
     private Context context;            // The calling context
     private EnergyDbAdapter dbAdapter;  // Adapter to access the db with the measurements

@@ -42,6 +42,11 @@ public final class EnergyDbAdapter {
     public static final String COLUMN_NAME_CHARGING = "is_charging";
     public static final String COLUMN_NAME_CHG_USB = "chg_usb";
     public static final String COLUMN_NAME_CHG_AC = "chg_ac";
+    public static final String COLUMN_NAME_WIFI = "wifi";
+    public static final String COLUMN_NAME_Conn_WIFI = "Connwifi";
+    public static final String COLUMN_NAME_BLUETOOTH = "bluetooth";
+   // public static final String COLUMN_NAME_Conn_BLUETOOTH = "Connbluetooth";
+    public static final String COLUMN_NAME_MOBILE_DATA = "mobile_data";
 
     // db datatypes
     private static final String TEXT_TYPE = " TEXT";
@@ -57,7 +62,12 @@ public final class EnergyDbAdapter {
                     COLUMN_NAME_PERCENTAGE + INTEGER_TYPE + COMMA_SEP +
                     COLUMN_NAME_CHARGING + INTEGER_TYPE + COMMA_SEP +
                     COLUMN_NAME_CHG_USB + INTEGER_TYPE + COMMA_SEP +
-                    COLUMN_NAME_CHG_AC + INTEGER_TYPE +
+                    COLUMN_NAME_CHG_AC + INTEGER_TYPE + COMMA_SEP +
+                    COLUMN_NAME_WIFI + INTEGER_TYPE + COMMA_SEP +
+                    COLUMN_NAME_Conn_WIFI + INTEGER_TYPE + COMMA_SEP +
+                    COLUMN_NAME_BLUETOOTH + INTEGER_TYPE + COMMA_SEP +
+                  //  COLUMN_NAME_Conn_BLUETOOTH + INTEGER_TYPE + COMMA_SEP +
+                    COLUMN_NAME_MOBILE_DATA + INTEGER_TYPE +
                     " )";
 
     // Cached headings to reduce database traffic
@@ -160,6 +170,8 @@ public final class EnergyDbAdapter {
      * @param id id of the data to get
      * @return Cursor
      */
+    // hena getDataById dah bya5od el data men el data base bel ID , ya3ny haya5od el data el folanayah 2aly el ID beta3ha kaza
+    // ya3ny law shelt ay 7aga menha w geat 3ala el app w geat 3ala ay row men 2aly bytla3o mesh hal2y 2aly sheltoh ( dah leah da3wa be 2aly byzhar 
     private Cursor getDataById(int id) {
         Cursor mCursor;
         mCursor = mDb.query(TABLE_NAME, new String[]{
@@ -168,7 +180,13 @@ public final class EnergyDbAdapter {
                 COLUMN_NAME_PERCENTAGE,
                 COLUMN_NAME_CHARGING,
                 COLUMN_NAME_CHG_USB,
-                COLUMN_NAME_CHG_AC
+                COLUMN_NAME_CHG_AC,
+                COLUMN_NAME_WIFI,
+                COLUMN_NAME_Conn_WIFI,
+                COLUMN_NAME_BLUETOOTH,
+               // COLUMN_NAME_Conn_BLUETOOTH,
+                COLUMN_NAME_MOBILE_DATA
+
         }, COLUMN_NAME_ID + "=" + String.valueOf(id + 1), null, null, null, null);
         if (mCursor != null) {
             mCursor.moveToFirst();
@@ -236,6 +254,8 @@ public final class EnergyDbAdapter {
      *
      * @return Cursor to all data in db
      */
+    // hena getAllData deh beta5od el data men el data base bas beta5od kol el data 2aly 3andoh , laken fe el getDataById da bya5od el data 2aly el ID beta3ha kaza
+    // ana mesh 3aref leah howa 3amel getAllData , mesh la2elha sabab ?????
     private Cursor getAllData() {
         Cursor mCursor = mDb.query(TABLE_NAME, new String[]{
                         COLUMN_NAME_ID,
@@ -243,7 +263,12 @@ public final class EnergyDbAdapter {
                         COLUMN_NAME_PERCENTAGE,
                         COLUMN_NAME_CHARGING,
                         COLUMN_NAME_CHG_USB,
-                        COLUMN_NAME_CHG_AC
+                        COLUMN_NAME_CHG_AC,
+                        COLUMN_NAME_WIFI,
+                        COLUMN_NAME_Conn_WIFI,
+                        COLUMN_NAME_BLUETOOTH,
+                     //   COLUMN_NAME_Conn_BLUETOOTH,
+                        COLUMN_NAME_MOBILE_DATA
                 },
                 null, null, null, null, null, null
         );
