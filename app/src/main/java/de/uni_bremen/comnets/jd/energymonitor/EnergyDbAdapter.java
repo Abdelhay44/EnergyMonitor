@@ -44,9 +44,22 @@ public final class EnergyDbAdapter {
     public static final String COLUMN_NAME_CHG_AC = "chg_ac";
     public static final String COLUMN_NAME_WIFI = "wifi";
     public static final String COLUMN_NAME_Conn_WIFI = "Connwifi";
+    public static final String COLUMN_NAME_WIFI_DURATION = "wifi_duration";
+    public static final String COLUMN_NAME_WIFI_RECEIVE  = "Wifi_RX";
+    public static final String COLUMN_NAME_WIFI_TRANSMIT = "Wifi_TX ";
     public static final String COLUMN_NAME_BLUETOOTH = "bluetooth";
-   // public static final String COLUMN_NAME_Conn_BLUETOOTH = "Connbluetooth";
+    public static final String COLUMN_NAME_BLUETOOTH_DURATION = "bluetooth_duration";
+    public static final String COLUMN_NAME_SCREEN = "screen";
+    public static final String COLUMN_NAME_SCREEN_DURATION = "screen_duration";
     public static final String COLUMN_NAME_MOBILE_DATA = "mobile_data";
+    public static final String COLUMN_NAME_RADIO_TECHNOLOGY = "radio_technology";
+    public static final String COLUMN_NAME_NETWORK_SPEED = "Network_Speed";
+    public static final String COLUMN_NAME_DATA_STATE = "Data_State";
+    public static final String COLUMN_NAME_CALL_TECHNOLOGY = "Call_Technology";
+    public static final String COLUMN_NAME_NETWORK_STATE = "Network_State";
+
+
+
 
     // db datatypes
     private static final String TEXT_TYPE = " TEXT";
@@ -65,9 +78,22 @@ public final class EnergyDbAdapter {
                     COLUMN_NAME_CHG_AC + INTEGER_TYPE + COMMA_SEP +
                     COLUMN_NAME_WIFI + INTEGER_TYPE + COMMA_SEP +
                     COLUMN_NAME_Conn_WIFI + INTEGER_TYPE + COMMA_SEP +
+                    COLUMN_NAME_WIFI_DURATION + INTEGER_TYPE + COMMA_SEP +
+                    COLUMN_NAME_WIFI_RECEIVE + INTEGER_TYPE + COMMA_SEP +
+                    COLUMN_NAME_WIFI_TRANSMIT + INTEGER_TYPE + COMMA_SEP +
                     COLUMN_NAME_BLUETOOTH + INTEGER_TYPE + COMMA_SEP +
-                  //  COLUMN_NAME_Conn_BLUETOOTH + INTEGER_TYPE + COMMA_SEP +
-                    COLUMN_NAME_MOBILE_DATA + INTEGER_TYPE +
+                    COLUMN_NAME_BLUETOOTH_DURATION + INTEGER_TYPE + COMMA_SEP +
+                    COLUMN_NAME_SCREEN + INTEGER_TYPE + COMMA_SEP +
+                    COLUMN_NAME_SCREEN_DURATION + INTEGER_TYPE + COMMA_SEP +
+                    COLUMN_NAME_MOBILE_DATA + INTEGER_TYPE + COMMA_SEP +
+                    COLUMN_NAME_RADIO_TECHNOLOGY + INTEGER_TYPE + COMMA_SEP +
+                    COLUMN_NAME_NETWORK_SPEED + INTEGER_TYPE + COMMA_SEP +
+                    COLUMN_NAME_DATA_STATE + INTEGER_TYPE + COMMA_SEP +
+                    COLUMN_NAME_CALL_TECHNOLOGY + INTEGER_TYPE + COMMA_SEP +
+                    COLUMN_NAME_NETWORK_STATE + INTEGER_TYPE +
+
+
+
                     " )";
 
     // Cached headings to reduce database traffic
@@ -183,9 +209,20 @@ public final class EnergyDbAdapter {
                 COLUMN_NAME_CHG_AC,
                 COLUMN_NAME_WIFI,
                 COLUMN_NAME_Conn_WIFI,
+                COLUMN_NAME_WIFI_DURATION,
+                COLUMN_NAME_WIFI_RECEIVE,
+                COLUMN_NAME_WIFI_TRANSMIT,
                 COLUMN_NAME_BLUETOOTH,
-               // COLUMN_NAME_Conn_BLUETOOTH,
-                COLUMN_NAME_MOBILE_DATA
+                COLUMN_NAME_BLUETOOTH_DURATION,
+                COLUMN_NAME_SCREEN,
+                COLUMN_NAME_SCREEN_DURATION,
+                COLUMN_NAME_MOBILE_DATA,
+                COLUMN_NAME_RADIO_TECHNOLOGY,
+                COLUMN_NAME_NETWORK_SPEED,
+                COLUMN_NAME_DATA_STATE,
+                COLUMN_NAME_CALL_TECHNOLOGY,
+                COLUMN_NAME_NETWORK_STATE
+
 
         }, COLUMN_NAME_ID + "=" + String.valueOf(id + 1), null, null, null, null);
         if (mCursor != null) {
@@ -266,9 +303,20 @@ public final class EnergyDbAdapter {
                         COLUMN_NAME_CHG_AC,
                         COLUMN_NAME_WIFI,
                         COLUMN_NAME_Conn_WIFI,
+                        COLUMN_NAME_WIFI_DURATION,
+                        COLUMN_NAME_WIFI_RECEIVE,
+                        COLUMN_NAME_WIFI_TRANSMIT,
                         COLUMN_NAME_BLUETOOTH,
-                     //   COLUMN_NAME_Conn_BLUETOOTH,
-                        COLUMN_NAME_MOBILE_DATA
+                        COLUMN_NAME_BLUETOOTH_DURATION,
+                        COLUMN_NAME_SCREEN,
+                        COLUMN_NAME_SCREEN_DURATION,
+                        COLUMN_NAME_MOBILE_DATA,
+                        COLUMN_NAME_RADIO_TECHNOLOGY,
+                        COLUMN_NAME_NETWORK_SPEED,
+                        COLUMN_NAME_DATA_STATE,
+                        COLUMN_NAME_CALL_TECHNOLOGY,
+                        COLUMN_NAME_NETWORK_STATE
+
                 },
                 null, null, null, null, null, null
         );
