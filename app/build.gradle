@@ -5,7 +5,7 @@ android {
     buildToolsVersion "23.0.2"
 
     defaultConfig {
-        applicationId "de.uni_bremen.comnets.jd.energymonitor"
+        applicationId "de.uni_bremen.comnets.abdelhay.energymonitor"
         minSdkVersion 19
         targetSdkVersion 23
         versionCode 1

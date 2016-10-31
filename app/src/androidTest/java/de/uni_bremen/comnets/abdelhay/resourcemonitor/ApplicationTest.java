@@ -1,4 +1,4 @@
-package de.uni_bremen.comnets.jd.energymonitor;
+package de.uni_bremen.comnets.abdelhay.resourcemonitor;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;
