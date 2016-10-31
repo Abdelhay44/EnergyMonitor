@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">EnergyMonitor</string>
+    <string name="app_name">ResourceMonitor</string>
     <string name="button_export_db">Export DB</string>
     <string name="button_flush_db">Flush DB</string>
     <string name="title_activity_feedback">FeedbackActivity</string>

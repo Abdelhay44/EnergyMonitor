@@ -1,4 +1,4 @@
-package de.uni_bremen.comnets.jd.energymonitor;
+package de.uni_bremen.comnets.abdelhay.resourcemonitor;
 
 import android.content.Context;
 import android.graphics.Typeface;
@@ -8,9 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.TextView;
-
-import java.util.HashMap;
-import java.util.List;
 
 /**
  * @author Jens Dede, jd@comnets.uni-bremen.de
