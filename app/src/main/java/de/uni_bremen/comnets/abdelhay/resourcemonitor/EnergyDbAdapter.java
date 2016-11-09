@@ -39,12 +39,21 @@ public final class EnergyDbAdapter {
     public static final String COLUMN_NAME_ID = "id";
     public static final String COLUMN_NAME_TIMESTAMP = "timestamp";
     public static final String COLUMN_NAME_PERCENTAGE = "percentage";
+    public static final String COLUMN_NAME_DAY = "day";
+    public static final String COLUMN_NAME_MONTH = "month";
+    public static final String COLUMN_NAME_HOUR = "hour";
+    public static final String COLUMN_NAME_MINUTES = "minutes";
+    public static final String COLUMN_NAME_SECOND = "second";
+
+
     public static final String COLUMN_NAME_CHARGING = "is_charging";
     public static final String COLUMN_NAME_CHG_USB = "chg_usb";
     public static final String COLUMN_NAME_CHG_AC = "chg_ac";
     public static final String COLUMN_NAME_WIFI = "wifi";
     public static final String COLUMN_NAME_Conn_WIFI = "Connwifi";
     public static final String COLUMN_NAME_WIFI_DURATION = "wifi_duration";
+    public static final String COLUMN_NAME_TOTAL_DATA_RECEIVE  = "Total_Data_RX";
+    public static final String COLUMN_NAME_TOTAL_DATA_TRANSMIT = "Total_Data_TX ";
     public static final String COLUMN_NAME_WIFI_RECEIVE  = "Wifi_RX";
     public static final String COLUMN_NAME_WIFI_TRANSMIT = "Wifi_TX ";
     public static final String COLUMN_NAME_BLUETOOTH = "bluetooth";
@@ -52,6 +61,8 @@ public final class EnergyDbAdapter {
     public static final String COLUMN_NAME_SCREEN = "screen";
     public static final String COLUMN_NAME_SCREEN_DURATION = "screen_duration";
     public static final String COLUMN_NAME_MOBILE_DATA = "mobile_data";
+    public static final String COLUMN_NAME_MOBILE_DATA_RECEIVE = "mobile_data_RX";
+    public static final String COLUMN_NAME_MOBILE_DATA_TRANSMIT = "mobile_data_TX";
     public static final String COLUMN_NAME_RADIO_TECHNOLOGY = "radio_technology";
     public static final String COLUMN_NAME_NETWORK_SPEED = "Network_Speed";
     public static final String COLUMN_NAME_DATA_STATE = "Data_State";
@@ -73,12 +84,19 @@ public final class EnergyDbAdapter {
                     COLUMN_NAME_ID + " INTEGER PRIMARY KEY," +
                     COLUMN_NAME_TIMESTAMP + NUMERIC_TYPE + COMMA_SEP +
                     COLUMN_NAME_PERCENTAGE + INTEGER_TYPE + COMMA_SEP +
+                    COLUMN_NAME_DAY + INTEGER_TYPE + COMMA_SEP +
+                    COLUMN_NAME_MONTH + INTEGER_TYPE + COMMA_SEP +
+                    COLUMN_NAME_HOUR + INTEGER_TYPE + COMMA_SEP +
+                    COLUMN_NAME_MINUTES + INTEGER_TYPE + COMMA_SEP +
+                    COLUMN_NAME_SECOND + INTEGER_TYPE + COMMA_SEP +
                     COLUMN_NAME_CHARGING + INTEGER_TYPE + COMMA_SEP +
                     COLUMN_NAME_CHG_USB + INTEGER_TYPE + COMMA_SEP +
                     COLUMN_NAME_CHG_AC + INTEGER_TYPE + COMMA_SEP +
                     COLUMN_NAME_WIFI + INTEGER_TYPE + COMMA_SEP +
                     COLUMN_NAME_Conn_WIFI + INTEGER_TYPE + COMMA_SEP +
                     COLUMN_NAME_WIFI_DURATION + INTEGER_TYPE + COMMA_SEP +
+                    COLUMN_NAME_TOTAL_DATA_RECEIVE + INTEGER_TYPE + COMMA_SEP +
+                    COLUMN_NAME_TOTAL_DATA_TRANSMIT + INTEGER_TYPE + COMMA_SEP +
                     COLUMN_NAME_WIFI_RECEIVE + INTEGER_TYPE + COMMA_SEP +
                     COLUMN_NAME_WIFI_TRANSMIT + INTEGER_TYPE + COMMA_SEP +
                     COLUMN_NAME_BLUETOOTH + INTEGER_TYPE + COMMA_SEP +
@@ -86,6 +104,8 @@ public final class EnergyDbAdapter {
                     COLUMN_NAME_SCREEN + INTEGER_TYPE + COMMA_SEP +
                     COLUMN_NAME_SCREEN_DURATION + INTEGER_TYPE + COMMA_SEP +
                     COLUMN_NAME_MOBILE_DATA + INTEGER_TYPE + COMMA_SEP +
+                    COLUMN_NAME_MOBILE_DATA_RECEIVE + INTEGER_TYPE + COMMA_SEP +
+                    COLUMN_NAME_MOBILE_DATA_TRANSMIT + INTEGER_TYPE + COMMA_SEP +
                     COLUMN_NAME_RADIO_TECHNOLOGY + INTEGER_TYPE + COMMA_SEP +
                     COLUMN_NAME_NETWORK_SPEED + INTEGER_TYPE + COMMA_SEP +
                     COLUMN_NAME_DATA_STATE + INTEGER_TYPE + COMMA_SEP +
@@ -204,12 +224,19 @@ public final class EnergyDbAdapter {
                 COLUMN_NAME_ID,
                 COLUMN_NAME_TIMESTAMP,
                 COLUMN_NAME_PERCENTAGE,
+                COLUMN_NAME_DAY,
+                COLUMN_NAME_MONTH,
+                COLUMN_NAME_HOUR,
+                COLUMN_NAME_MINUTES,
+                COLUMN_NAME_SECOND,
                 COLUMN_NAME_CHARGING,
                 COLUMN_NAME_CHG_USB,
                 COLUMN_NAME_CHG_AC,
                 COLUMN_NAME_WIFI,
                 COLUMN_NAME_Conn_WIFI,
                 COLUMN_NAME_WIFI_DURATION,
+                COLUMN_NAME_TOTAL_DATA_RECEIVE,
+                COLUMN_NAME_TOTAL_DATA_TRANSMIT,
                 COLUMN_NAME_WIFI_RECEIVE,
                 COLUMN_NAME_WIFI_TRANSMIT,
                 COLUMN_NAME_BLUETOOTH,
@@ -217,6 +244,8 @@ public final class EnergyDbAdapter {
                 COLUMN_NAME_SCREEN,
                 COLUMN_NAME_SCREEN_DURATION,
                 COLUMN_NAME_MOBILE_DATA,
+                COLUMN_NAME_MOBILE_DATA_RECEIVE,
+                COLUMN_NAME_MOBILE_DATA_TRANSMIT,
                 COLUMN_NAME_RADIO_TECHNOLOGY,
                 COLUMN_NAME_NETWORK_SPEED,
                 COLUMN_NAME_DATA_STATE,
@@ -298,12 +327,19 @@ public final class EnergyDbAdapter {
                         COLUMN_NAME_ID,
                         COLUMN_NAME_TIMESTAMP,
                         COLUMN_NAME_PERCENTAGE,
+                        COLUMN_NAME_DAY,
+                        COLUMN_NAME_MONTH,
+                        COLUMN_NAME_HOUR,
+                        COLUMN_NAME_MINUTES,
+                        COLUMN_NAME_SECOND,
                         COLUMN_NAME_CHARGING,
                         COLUMN_NAME_CHG_USB,
                         COLUMN_NAME_CHG_AC,
                         COLUMN_NAME_WIFI,
                         COLUMN_NAME_Conn_WIFI,
                         COLUMN_NAME_WIFI_DURATION,
+                        COLUMN_NAME_TOTAL_DATA_RECEIVE,
+                        COLUMN_NAME_TOTAL_DATA_TRANSMIT,
                         COLUMN_NAME_WIFI_RECEIVE,
                         COLUMN_NAME_WIFI_TRANSMIT,
                         COLUMN_NAME_BLUETOOTH,
@@ -311,6 +347,8 @@ public final class EnergyDbAdapter {
                         COLUMN_NAME_SCREEN,
                         COLUMN_NAME_SCREEN_DURATION,
                         COLUMN_NAME_MOBILE_DATA,
+                        COLUMN_NAME_MOBILE_DATA_RECEIVE,
+                        COLUMN_NAME_MOBILE_DATA_TRANSMIT,
                         COLUMN_NAME_RADIO_TECHNOLOGY,
                         COLUMN_NAME_NETWORK_SPEED,
                         COLUMN_NAME_DATA_STATE,

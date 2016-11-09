@@ -79,6 +79,16 @@ public class ConfigActivity extends Activity {
 
         boolean  Bluetooth_still_conn = true;
 
+        double Total_StartRX;
+        double Total_StartTX;
+        double Mobile_StartRX;
+        double Mobile_StartTX;
+
+        double Total_EndRX;
+        double Total_EndTX;
+        double Mobile_EndRX;
+        double Mobile_EndTX;
+
         String Wifi_Initiation_Duration = "null";
         String Screen_Initiation_Duration = "null";
         String RxBytes ="null";
@@ -99,15 +109,23 @@ public class ConfigActivity extends Activity {
 
 
 
+
         @Override
         public void onReceive(Context context, Intent intent) {
             final String action = intent.getAction();
 
-
             // to check Bluetooth Enabled or not
-            BluetoothAdapter Bluetooth = BluetoothAdapter.getDefaultAdapter();
-            boolean isBluetooth = Bluetooth.isEnabled();
+            boolean isBluetooth ;
 
+            BluetoothAdapter Bluetooth = BluetoothAdapter.getDefaultAdapter();
+            if(Bluetooth == null){
+                isBluetooth = false;
+                Toast toast4 = Toast.makeText(ConfigActivity.this, " Device doesn't support Bluetooth " , Toast.LENGTH_LONG);
+                toast4.show();
+            }
+            else {
+                isBluetooth = Bluetooth.isEnabled();
+            }
             if (action.equals(BluetoothAdapter.ACTION_STATE_CHANGED)) {
                 final int state = intent.getIntExtra(BluetoothAdapter.EXTRA_STATE, BluetoothAdapter.ERROR);
                 switch(state) {
@@ -127,11 +145,17 @@ public class ConfigActivity extends Activity {
                             bluetooth_Month_conn = bluetooth_Month_conn +1;
 
                             Bluetooth_still_conn = false;
-                            Toast toast4 = Toast.makeText(ConfigActivity.this, " Bluetooth is Connected  " + bluetooth_Month_conn, Toast.LENGTH_LONG);
-                            toast4.show();
+                            Toast toast5 = Toast.makeText(ConfigActivity.this, " Bluetooth is connected  " + bluetooth_Hour_conn + " hours, " + bluetooth_Minutes_conn + " minutes, " + bluetooth_Second_conn + " seconds ", Toast.LENGTH_LONG);
+                            toast5.show();
 
 
+                           // to store the amount of TX and RX data that used since device boot
+                            Total_StartRX = TrafficStats.getTotalRxBytes();
+                            Total_StartTX = TrafficStats.getTotalTxBytes();
 
+                           // to store the amount of TX and RX  Mobile data  that used since device boot
+                            Mobile_StartRX = TrafficStats.getMobileRxBytes();
+                            Mobile_StartTX = TrafficStats.getMobileTxBytes();
 
 
                             String Bluetooth_Initiation_Duration = "null";
@@ -142,6 +166,11 @@ public class ConfigActivity extends Activity {
 
 
                             ContentValues values = new ContentValues();
+                            values.put(EnergyDbAdapter.COLUMN_NAME_DAY, bluetooth_Day_conn);
+                            values.put(EnergyDbAdapter.COLUMN_NAME_MONTH, bluetooth_Month_conn);
+                            values.put(EnergyDbAdapter.COLUMN_NAME_HOUR, bluetooth_Hour_conn);
+                            values.put(EnergyDbAdapter.COLUMN_NAME_MINUTES, bluetooth_Minutes_conn);
+                            values.put(EnergyDbAdapter.COLUMN_NAME_SECOND, bluetooth_Second_conn);
                             values.put(EnergyDbAdapter.COLUMN_NAME_CHARGING, isCharging);
                             values.put(EnergyDbAdapter.COLUMN_NAME_TIMESTAMP, connectedTime);
                             values.put(EnergyDbAdapter.COLUMN_NAME_CHG_AC, acCharge);
@@ -150,6 +179,8 @@ public class ConfigActivity extends Activity {
                             values.put(EnergyDbAdapter.COLUMN_NAME_WIFI, isWifi);
                             values.put(EnergyDbAdapter.COLUMN_NAME_Conn_WIFI, ConnWifi);
                             values.put(EnergyDbAdapter.COLUMN_NAME_WIFI_DURATION, Wifi_Initiation_Duration);
+                            values.put(EnergyDbAdapter.COLUMN_NAME_TOTAL_DATA_RECEIVE,  Total_StartRX);
+                            values.put(EnergyDbAdapter.COLUMN_NAME_TOTAL_DATA_TRANSMIT,  Total_StartTX);
                             values.put(EnergyDbAdapter.COLUMN_NAME_WIFI_RECEIVE,  RxBytes);
                             values.put(EnergyDbAdapter.COLUMN_NAME_WIFI_TRANSMIT,  TxBytes);
                             values.put(EnergyDbAdapter.COLUMN_NAME_BLUETOOTH, isBluetooth);
@@ -157,11 +188,14 @@ public class ConfigActivity extends Activity {
                             values.put(EnergyDbAdapter.COLUMN_NAME_SCREEN, isScreenOn);
                             values.put(EnergyDbAdapter.COLUMN_NAME_SCREEN_DURATION,Screen_Initiation_Duration );
                             values.put(EnergyDbAdapter.COLUMN_NAME_MOBILE_DATA, mobileDataEnabled);
+                            values.put(EnergyDbAdapter.COLUMN_NAME_MOBILE_DATA_RECEIVE, Mobile_StartRX);
+                            values.put(EnergyDbAdapter.COLUMN_NAME_MOBILE_DATA_TRANSMIT, Mobile_StartTX);
                             values.put(EnergyDbAdapter.COLUMN_NAME_RADIO_TECHNOLOGY, Radio_Technology);
                             values.put(EnergyDbAdapter.COLUMN_NAME_NETWORK_SPEED, Network_Speed);
                             values.put(EnergyDbAdapter.COLUMN_NAME_DATA_STATE, Data_State);
                             values.put(EnergyDbAdapter.COLUMN_NAME_CALL_TECHNOLOGY, Call_Technology);
                             values.put(EnergyDbAdapter.COLUMN_NAME_NETWORK_STATE, Network_State);
+
 
 
                             if (dbAdapter.appendData(values) == -1) {
@@ -234,12 +268,23 @@ public class ConfigActivity extends Activity {
                             }
 
 
+                            // to store the amount of TX and RX data that used by the cellphone before wifi is connected
+                            Total_EndRX = TrafficStats.getTotalRxBytes();
+                            Total_EndTX = TrafficStats.getTotalTxBytes();
 
+
+                            Mobile_EndRX = TrafficStats.getMobileRxBytes();
+                            Mobile_EndTX = TrafficStats.getMobileTxBytes();
 
 
 
 
                             ContentValues values = new ContentValues();
+                            values.put(EnergyDbAdapter.COLUMN_NAME_DAY, bluetooth_Day_dis_conn);
+                            values.put(EnergyDbAdapter.COLUMN_NAME_MONTH, bluetooth_Month_dis_conn);
+                            values.put(EnergyDbAdapter.COLUMN_NAME_HOUR, bluetooth_Hour_dis_conn);
+                            values.put(EnergyDbAdapter.COLUMN_NAME_MINUTES, bluetooth_Minutes_dis_conn);
+                            values.put(EnergyDbAdapter.COLUMN_NAME_SECOND, bluetooth_Second_dis_conn);
                             values.put(EnergyDbAdapter.COLUMN_NAME_CHARGING, isCharging);
                             values.put(EnergyDbAdapter.COLUMN_NAME_TIMESTAMP, disconnectedTime);
                             values.put(EnergyDbAdapter.COLUMN_NAME_CHG_AC, acCharge);
@@ -248,6 +293,8 @@ public class ConfigActivity extends Activity {
                             values.put(EnergyDbAdapter.COLUMN_NAME_WIFI, isWifi);
                             values.put(EnergyDbAdapter.COLUMN_NAME_Conn_WIFI, ConnWifi);
                             values.put(EnergyDbAdapter.COLUMN_NAME_WIFI_DURATION, Wifi_Initiation_Duration);
+                            values.put(EnergyDbAdapter.COLUMN_NAME_TOTAL_DATA_RECEIVE,  Total_EndRX);
+                            values.put(EnergyDbAdapter.COLUMN_NAME_TOTAL_DATA_TRANSMIT,  Total_EndTX);
                             values.put(EnergyDbAdapter.COLUMN_NAME_WIFI_RECEIVE,  RxBytes);
                             values.put(EnergyDbAdapter.COLUMN_NAME_WIFI_TRANSMIT,  TxBytes);
                             values.put(EnergyDbAdapter.COLUMN_NAME_BLUETOOTH, isBluetooth);
@@ -255,11 +302,14 @@ public class ConfigActivity extends Activity {
                             values.put(EnergyDbAdapter.COLUMN_NAME_SCREEN, isScreenOn);
                             values.put(EnergyDbAdapter.COLUMN_NAME_SCREEN_DURATION,Screen_Initiation_Duration );
                             values.put(EnergyDbAdapter.COLUMN_NAME_MOBILE_DATA, mobileDataEnabled);
+                            values.put(EnergyDbAdapter.COLUMN_NAME_MOBILE_DATA_RECEIVE, Mobile_EndRX);
+                            values.put(EnergyDbAdapter.COLUMN_NAME_MOBILE_DATA_TRANSMIT, Mobile_EndTX);
                             values.put(EnergyDbAdapter.COLUMN_NAME_RADIO_TECHNOLOGY, Radio_Technology);
                             values.put(EnergyDbAdapter.COLUMN_NAME_NETWORK_SPEED, Network_Speed);
                             values.put(EnergyDbAdapter.COLUMN_NAME_DATA_STATE, Data_State);
                             values.put(EnergyDbAdapter.COLUMN_NAME_CALL_TECHNOLOGY, Call_Technology);
                             values.put(EnergyDbAdapter.COLUMN_NAME_NETWORK_STATE, Network_State);
+
 
 
                             if (dbAdapter.appendData(values) == -1) {
@@ -310,11 +360,16 @@ public class ConfigActivity extends Activity {
         int wifi_Day_Duration;
 
 
-        double mStartRX;
-        double mStartTX;
+        double Total_StartRX;
+        double Total_StartTX;
+        double Mobile_StartRX;
+        double Mobile_StartTX;
 
-        double mEndRx;
-        double mEndTx;
+
+        double Mobile_EndRx;
+        double Mobile_EndTx;
+        double Total_EndRx;
+        double Total_EndTx;
 
         double RxBytes;
         double TxBytes;
@@ -380,9 +435,13 @@ public class ConfigActivity extends Activity {
                     toast1.show();
 
 
-                    // to store the amount of TX and RX data that used by the cellphone before wifi is connected
-                      mStartRX = TrafficStats.getTotalRxBytes();
-                      mStartTX = TrafficStats.getTotalTxBytes();
+                    // to store the amount of TX and RX data that used since device boot
+                    Total_StartRX = TrafficStats.getTotalRxBytes();
+                    Total_StartTX = TrafficStats.getTotalTxBytes();
+
+                    // to store the amount of TX and RX Mobile data that used since device boot
+                    Mobile_StartRX = TrafficStats.getMobileRxBytes();
+                    Mobile_StartTX = TrafficStats.getMobileTxBytes();
 
 
 
@@ -396,6 +455,11 @@ public class ConfigActivity extends Activity {
 
 
                     ContentValues values = new ContentValues();                     //bysglha fi el data bas table
+                    values.put(EnergyDbAdapter.COLUMN_NAME_DAY, wifi_Day_conn);
+                    values.put(EnergyDbAdapter.COLUMN_NAME_MONTH, wifi_Month_conn);
+                    values.put(EnergyDbAdapter.COLUMN_NAME_HOUR, wifi_Hour_conn);
+                    values.put(EnergyDbAdapter.COLUMN_NAME_MINUTES, wifi_Minutes_conn);
+                    values.put(EnergyDbAdapter.COLUMN_NAME_SECOND, wifi_Second_conn);
                     values.put(EnergyDbAdapter.COLUMN_NAME_CHARGING, isCharging);
                     values.put(EnergyDbAdapter.COLUMN_NAME_TIMESTAMP, connectedTime);
                     values.put(EnergyDbAdapter.COLUMN_NAME_CHG_AC, acCharge);
@@ -404,6 +468,8 @@ public class ConfigActivity extends Activity {
                     values.put(EnergyDbAdapter.COLUMN_NAME_WIFI, isWifi);
                     values.put(EnergyDbAdapter.COLUMN_NAME_Conn_WIFI, ConnWifi);
                     values.put(EnergyDbAdapter.COLUMN_NAME_WIFI_DURATION, Wifi_Initiation_Duration );
+                    values.put(EnergyDbAdapter.COLUMN_NAME_TOTAL_DATA_RECEIVE,  Total_StartRX);
+                    values.put(EnergyDbAdapter.COLUMN_NAME_TOTAL_DATA_TRANSMIT,  Total_StartTX);
                     values.put(EnergyDbAdapter.COLUMN_NAME_WIFI_RECEIVE,  RxBytes);
                     values.put(EnergyDbAdapter.COLUMN_NAME_WIFI_TRANSMIT,  TxBytes);
                     values.put(EnergyDbAdapter.COLUMN_NAME_BLUETOOTH, isBluetooth);
@@ -411,12 +477,13 @@ public class ConfigActivity extends Activity {
                     values.put(EnergyDbAdapter.COLUMN_NAME_SCREEN, isScreenOn);
                     values.put(EnergyDbAdapter.COLUMN_NAME_SCREEN_DURATION,Screen_Initiation_Duration );
                     values.put(EnergyDbAdapter.COLUMN_NAME_MOBILE_DATA, mobileDataEnabled);
+                    values.put(EnergyDbAdapter.COLUMN_NAME_MOBILE_DATA_RECEIVE, Mobile_StartRX);
+                    values.put(EnergyDbAdapter.COLUMN_NAME_MOBILE_DATA_TRANSMIT, Mobile_StartTX);
                     values.put(EnergyDbAdapter.COLUMN_NAME_RADIO_TECHNOLOGY,  Radio_Technology);
                     values.put(EnergyDbAdapter.COLUMN_NAME_NETWORK_SPEED,  Network_Speed);
                     values.put(EnergyDbAdapter.COLUMN_NAME_DATA_STATE,  Data_State);
                     values.put(EnergyDbAdapter.COLUMN_NAME_CALL_TECHNOLOGY,  Call_Technology);
                     values.put(EnergyDbAdapter.COLUMN_NAME_NETWORK_STATE,  Network_State);
-
 
 
 
@@ -452,12 +519,15 @@ public class ConfigActivity extends Activity {
                     toast2.show();
 
 
-                    // to calculate the amount of data after wifi is disconnected
-                     mEndRx = TrafficStats.getTotalRxBytes();
-                     mEndTx = TrafficStats.getTotalTxBytes();
-                     RxBytes = (mEndRx- mStartRX)/1000; //  divid by 1000 to get the data with Kilo Byte
-                     TxBytes = (mEndTx- mStartTX)/1000;
+                    // to calculate the amount of RX and TX data since the device boot
+                    Total_EndRx = TrafficStats.getTotalRxBytes();
+                    Total_EndTx = TrafficStats.getTotalTxBytes();
+                     RxBytes = (Total_EndRx- Total_StartRX)/1000; //  divide by 1000 to get the data with Kilo Byte
+                     TxBytes = (Total_EndTx- Total_StartTX)/1000;
 
+                   // to calculate the amount of RX and TX Mobile  data since the device boot
+                    Mobile_EndRx = TrafficStats.getMobileRxBytes();
+                    Mobile_EndTx = TrafficStats.getMobileTxBytes();
 
 
 
@@ -511,6 +581,11 @@ public class ConfigActivity extends Activity {
 
 
                     ContentValues values = new ContentValues();
+                    values.put(EnergyDbAdapter.COLUMN_NAME_DAY, wifi_Day_dis_conn);
+                    values.put(EnergyDbAdapter.COLUMN_NAME_MONTH, wifi_Month_dis_conn);
+                    values.put(EnergyDbAdapter.COLUMN_NAME_HOUR, wifi_Hour_dis_conn);
+                    values.put(EnergyDbAdapter.COLUMN_NAME_MINUTES, wifi_Minutes_dis_conn);
+                    values.put(EnergyDbAdapter.COLUMN_NAME_SECOND, wifi_Second_dis_conn);
                     values.put(EnergyDbAdapter.COLUMN_NAME_CHARGING, isCharging);
                     values.put(EnergyDbAdapter.COLUMN_NAME_TIMESTAMP, disconnectedTime);
                     values.put(EnergyDbAdapter.COLUMN_NAME_CHG_AC, acCharge);
@@ -519,6 +594,8 @@ public class ConfigActivity extends Activity {
                     values.put(EnergyDbAdapter.COLUMN_NAME_WIFI, isWifi);
                     values.put(EnergyDbAdapter.COLUMN_NAME_Conn_WIFI, ConnWifi);
                     values.put(EnergyDbAdapter.COLUMN_NAME_WIFI_DURATION,wifi_Day_Duration + ":" + wifi_Hour_Duration + ":" + wifi_Minutes_Duration + ":" + wifi_Second_Duration );
+                    values.put(EnergyDbAdapter.COLUMN_NAME_TOTAL_DATA_RECEIVE,  Total_EndRx);
+                    values.put(EnergyDbAdapter.COLUMN_NAME_TOTAL_DATA_TRANSMIT,  Total_EndTx);
                     values.put(EnergyDbAdapter.COLUMN_NAME_WIFI_RECEIVE,  RxBytes + "KB");
                     values.put(EnergyDbAdapter.COLUMN_NAME_WIFI_TRANSMIT,  TxBytes + "KB");
                     values.put(EnergyDbAdapter.COLUMN_NAME_BLUETOOTH, isBluetooth);
@@ -526,11 +603,14 @@ public class ConfigActivity extends Activity {
                     values.put(EnergyDbAdapter.COLUMN_NAME_SCREEN, isScreenOn);
                     values.put(EnergyDbAdapter.COLUMN_NAME_SCREEN_DURATION,Screen_Initiation_Duration );
                     values.put(EnergyDbAdapter.COLUMN_NAME_MOBILE_DATA, mobileDataEnabled);
+                    values.put(EnergyDbAdapter.COLUMN_NAME_MOBILE_DATA_RECEIVE, Mobile_EndRx);
+                    values.put(EnergyDbAdapter.COLUMN_NAME_MOBILE_DATA_TRANSMIT, Mobile_EndTx);
                     values.put(EnergyDbAdapter.COLUMN_NAME_RADIO_TECHNOLOGY,  Radio_Technology);
                     values.put(EnergyDbAdapter.COLUMN_NAME_NETWORK_SPEED,  Network_Speed);
                     values.put(EnergyDbAdapter.COLUMN_NAME_DATA_STATE,  Data_State);
                     values.put(EnergyDbAdapter.COLUMN_NAME_CALL_TECHNOLOGY,  Call_Technology);
                     values.put(EnergyDbAdapter.COLUMN_NAME_NETWORK_STATE,  Network_State);
+
 
 
 
@@ -577,6 +657,16 @@ public class ConfigActivity extends Activity {
         int Screen_Second_Duration;
         int Screen_Day_Duration;
         public  boolean wasScreenOn = true;
+
+        double Total_StartRX;
+        double Total_StartTX;
+        double Mobile_StartRX;
+        double Mobile_StartTX;
+
+        double Total_EndRX;
+        double Total_EndTX;
+        double Mobile_EndRX;
+        double Mobile_EndTX;
 
 
 
@@ -633,18 +723,23 @@ public class ConfigActivity extends Activity {
                    // Toast toast1 = Toast.makeText(ConfigActivity.this, " Screen is ON  " + Screen_Hour_conn + " hours, " + Screen_Minutes_conn + " minutes, " + Screen_Second_conn + " seconds ", Toast.LENGTH_LONG);
                     //toast1.show();
 
+                      // to store the amount of TX and RX data that used since the device boot
+                      Total_StartRX = TrafficStats.getTotalRxBytes();
+                      Total_StartTX = TrafficStats.getTotalTxBytes();
 
-
-
-
-
-
-
+                      // to store the amount of TX and RX Mobile data that used since the device boot
+                      Mobile_StartRX = TrafficStats.getMobileRxBytes();
+                      Mobile_StartTX = TrafficStats.getMobileTxBytes();
 
                     String Screen_Initiation_Duration="null";
 
 
                     ContentValues values = new ContentValues();
+                      values.put(EnergyDbAdapter.COLUMN_NAME_DAY, Screen_Day_conn);
+                      values.put(EnergyDbAdapter.COLUMN_NAME_MONTH, Screen_Month_conn);
+                      values.put(EnergyDbAdapter.COLUMN_NAME_HOUR, Screen_Hour_conn);
+                      values.put(EnergyDbAdapter.COLUMN_NAME_MINUTES, Screen_Minutes_conn);
+                      values.put(EnergyDbAdapter.COLUMN_NAME_SECOND, Screen_Second_conn);
                     values.put(EnergyDbAdapter.COLUMN_NAME_CHARGING, isCharging);
                     values.put(EnergyDbAdapter.COLUMN_NAME_TIMESTAMP, connectedTime);
                     values.put(EnergyDbAdapter.COLUMN_NAME_CHG_AC, acCharge);
@@ -653,6 +748,8 @@ public class ConfigActivity extends Activity {
                     values.put(EnergyDbAdapter.COLUMN_NAME_WIFI, isWifi);
                     values.put(EnergyDbAdapter.COLUMN_NAME_Conn_WIFI, ConnWifi);
                     values.put(EnergyDbAdapter.COLUMN_NAME_WIFI_DURATION, Wifi_Initiation_Duration );
+                      values.put(EnergyDbAdapter.COLUMN_NAME_TOTAL_DATA_RECEIVE,  Total_StartRX);
+                      values.put(EnergyDbAdapter.COLUMN_NAME_TOTAL_DATA_TRANSMIT,  Total_StartTX);
                       values.put(EnergyDbAdapter.COLUMN_NAME_WIFI_RECEIVE,  RxBytes);
                       values.put(EnergyDbAdapter.COLUMN_NAME_WIFI_TRANSMIT,  TxBytes);
                     values.put(EnergyDbAdapter.COLUMN_NAME_BLUETOOTH, isBluetooth);
@@ -660,6 +757,8 @@ public class ConfigActivity extends Activity {
                     values.put(EnergyDbAdapter.COLUMN_NAME_SCREEN, isScreenOn);
                     values.put(EnergyDbAdapter.COLUMN_NAME_SCREEN_DURATION,Screen_Initiation_Duration );
                     values.put(EnergyDbAdapter.COLUMN_NAME_MOBILE_DATA, mobileDataEnabled);
+                      values.put(EnergyDbAdapter.COLUMN_NAME_MOBILE_DATA_RECEIVE, Mobile_StartRX);
+                      values.put(EnergyDbAdapter.COLUMN_NAME_MOBILE_DATA_TRANSMIT, Mobile_StartTX);
                     values.put(EnergyDbAdapter.COLUMN_NAME_RADIO_TECHNOLOGY,  Radio_Technology);
                     values.put(EnergyDbAdapter.COLUMN_NAME_NETWORK_SPEED,  Network_Speed);
                     values.put(EnergyDbAdapter.COLUMN_NAME_DATA_STATE,  Data_State);
@@ -750,10 +849,21 @@ public class ConfigActivity extends Activity {
 
 
 
+                    // to store the amount of TX and RX data that used by the cellphone before wifi is connected
+                    Total_EndRX = TrafficStats.getTotalRxBytes();
+                    Total_EndTX = TrafficStats.getTotalTxBytes();
 
+
+                    Mobile_EndRX = TrafficStats.getMobileRxBytes();
+                    Mobile_EndTX = TrafficStats.getMobileTxBytes();
 
 
                     ContentValues values = new ContentValues();
+                    values.put(EnergyDbAdapter.COLUMN_NAME_DAY, Screen_Day_dis_conn);
+                    values.put(EnergyDbAdapter.COLUMN_NAME_MONTH, Screen_Month_dis_conn);
+                    values.put(EnergyDbAdapter.COLUMN_NAME_HOUR, Screen_Hour_dis_conn);
+                    values.put(EnergyDbAdapter.COLUMN_NAME_MINUTES, Screen_Minutes_dis_conn);
+                    values.put(EnergyDbAdapter.COLUMN_NAME_SECOND, Screen_Second_dis_conn);
                     values.put(EnergyDbAdapter.COLUMN_NAME_CHARGING, isCharging);
                     values.put(EnergyDbAdapter.COLUMN_NAME_TIMESTAMP, disconnectedTime);
                     values.put(EnergyDbAdapter.COLUMN_NAME_CHG_AC, acCharge);
@@ -762,6 +872,8 @@ public class ConfigActivity extends Activity {
                     values.put(EnergyDbAdapter.COLUMN_NAME_WIFI, isWifi);
                     values.put(EnergyDbAdapter.COLUMN_NAME_Conn_WIFI, ConnWifi);
                     values.put(EnergyDbAdapter.COLUMN_NAME_WIFI_DURATION, Wifi_Initiation_Duration );
+                    values.put(EnergyDbAdapter.COLUMN_NAME_TOTAL_DATA_RECEIVE,  Total_EndRX);
+                    values.put(EnergyDbAdapter.COLUMN_NAME_TOTAL_DATA_TRANSMIT,  Total_EndTX);
                     values.put(EnergyDbAdapter.COLUMN_NAME_WIFI_RECEIVE,  RxBytes);
                     values.put(EnergyDbAdapter.COLUMN_NAME_WIFI_TRANSMIT,  TxBytes);
                     values.put(EnergyDbAdapter.COLUMN_NAME_BLUETOOTH, isBluetooth);
@@ -769,6 +881,8 @@ public class ConfigActivity extends Activity {
                     values.put(EnergyDbAdapter.COLUMN_NAME_SCREEN, isScreenOn);
                     values.put(EnergyDbAdapter.COLUMN_NAME_SCREEN_DURATION,Screen_Day_Duration+ ":" + Screen_Hour_Duration + ":" + Screen_Minutes_Duration + ":" + Screen_Second_Duration );
                     values.put(EnergyDbAdapter.COLUMN_NAME_MOBILE_DATA, mobileDataEnabled);
+                    values.put(EnergyDbAdapter.COLUMN_NAME_MOBILE_DATA_RECEIVE, Mobile_EndRX);
+                    values.put(EnergyDbAdapter.COLUMN_NAME_MOBILE_DATA_TRANSMIT, Mobile_EndTX);
                     values.put(EnergyDbAdapter.COLUMN_NAME_RADIO_TECHNOLOGY,  Radio_Technology);
                     values.put(EnergyDbAdapter.COLUMN_NAME_NETWORK_SPEED,  Network_Speed);
                     values.put(EnergyDbAdapter.COLUMN_NAME_DATA_STATE,  Data_State);
@@ -841,26 +955,17 @@ public class ConfigActivity extends Activity {
 
 
 
+
+         // Intentfilter for Wifi
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(WifiManager.NETWORK_STATE_CHANGED_ACTION);
         registerReceiver(receiver, intentFilter);
 
-
-
-
-
+        // Intentfilter for Bluetooth
         IntentFilter filter1 = new IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED);
         registerReceiver(mBroadcastReceiver1, filter1);
 
-
-
-
-
-
-
-
-
-
+        // Intentfilter for display " Screen "
         IntentFilter filter = new IntentFilter(Intent.ACTION_SCREEN_ON);
         filter.addAction(Intent.ACTION_SCREEN_OFF);
         BroadcastReceiver mReceiver = new ScreenReceiver();
@@ -912,12 +1017,33 @@ public class ConfigActivity extends Activity {
 
             batteryReceiver = new BroadcastReceiver() {
 
+                int Day;
+                int Month;
+                int Hour;
+                int Minutes;
+                int Second;
+
+
+                double Total_RX;
+                double Total_TX;
+                double Mobile_RX;
+                double Mobile_TX;
 
 
                 @Override
                 public void onReceive(Context context, Intent intent) { // bygeeb el m3lomat 2aly m7tagha
 
                     long currentTime = System.currentTimeMillis();  // bytla3 el sa3a kame men el gehaz
+                    Calendar cal = Calendar.getInstance();
+                    cal.setTimeInMillis(currentTime);    // Sets this Calendar's current time from the given long value.
+                    Day = cal.get(Calendar.DAY_OF_MONTH);
+                    Month = cal.get(Calendar.MONTH);
+                    // because calendar.Month give the month -1 " I don't know why !! " ex: if we are on October the result will be 9 not 10 !!
+                    Month = Month +1;
+                    Hour = cal.get(Calendar.HOUR_OF_DAY);
+                    Minutes = cal.get(Calendar.MINUTE);
+                    Second = cal.get(Calendar.SECOND);
+
 
                     int currentLevel = intent.getIntExtra(BatteryManager.EXTRA_LEVEL, -1);
                     int scaling = intent.getIntExtra(BatteryManager.EXTRA_SCALE, -1);
@@ -945,14 +1071,29 @@ public class ConfigActivity extends Activity {
                     boolean ConnWifi = mWifi.isConnected();
 
 
+                    // to store the amount of TX and RX data that used since the device boot
+                    Total_RX = TrafficStats.getTotalRxBytes();
+                    Total_TX = TrafficStats.getTotalTxBytes();
+
+                   // to store the amount of TX and RX  Mobile data  that used since the device boot
+                    Mobile_RX = TrafficStats.getMobileRxBytes();
+                    Mobile_TX = TrafficStats.getMobileTxBytes();
 
 
 
 
+                    // to check Bluetooth Enabled or not
+                    boolean isBluetooth ;
 
-                   // to check Bluetooth Enabled or not
                     BluetoothAdapter Bluetooth = BluetoothAdapter.getDefaultAdapter();
-                    boolean isBluetooth = Bluetooth.isEnabled();
+                    if(Bluetooth == null){
+                        isBluetooth = false;
+                        Toast toast4 = Toast.makeText(ConfigActivity.this, " Device doesn't support Bluetooth " , Toast.LENGTH_LONG);
+                        toast4.show();
+                    }
+                    else {
+                        isBluetooth = Bluetooth.isEnabled();
+                    }
 
                     // to check Screen on or off
                     PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
@@ -1138,6 +1279,11 @@ public class ConfigActivity extends Activity {
                     String TxBytes = " null";
 
                     ContentValues values = new ContentValues();                     //bysglha fi el data bas table
+                    values.put(EnergyDbAdapter.COLUMN_NAME_DAY, Day);
+                    values.put(EnergyDbAdapter.COLUMN_NAME_MONTH, Month);
+                    values.put(EnergyDbAdapter.COLUMN_NAME_HOUR, Hour);
+                    values.put(EnergyDbAdapter.COLUMN_NAME_MINUTES, Minutes);
+                    values.put(EnergyDbAdapter.COLUMN_NAME_SECOND, Second);
                     values.put(EnergyDbAdapter.COLUMN_NAME_CHARGING, isCharging);
                     values.put(EnergyDbAdapter.COLUMN_NAME_TIMESTAMP, currentTime);
                     values.put(EnergyDbAdapter.COLUMN_NAME_CHG_AC, acCharge);
@@ -1146,6 +1292,8 @@ public class ConfigActivity extends Activity {
                     values.put(EnergyDbAdapter.COLUMN_NAME_WIFI, isWifi);
                     values.put(EnergyDbAdapter.COLUMN_NAME_Conn_WIFI, ConnWifi);
                     values.put(EnergyDbAdapter.COLUMN_NAME_WIFI_DURATION,Wifi_Initiation_Duration );
+                    values.put(EnergyDbAdapter.COLUMN_NAME_TOTAL_DATA_RECEIVE,  Total_RX);
+                    values.put(EnergyDbAdapter.COLUMN_NAME_TOTAL_DATA_TRANSMIT,  Total_TX);
                     values.put(EnergyDbAdapter.COLUMN_NAME_WIFI_RECEIVE,  RxBytes);
                     values.put(EnergyDbAdapter.COLUMN_NAME_WIFI_TRANSMIT,  TxBytes);
                     values.put(EnergyDbAdapter.COLUMN_NAME_BLUETOOTH, isBluetooth);
@@ -1153,6 +1301,8 @@ public class ConfigActivity extends Activity {
                     values.put(EnergyDbAdapter.COLUMN_NAME_SCREEN, isScreenOn);
                     values.put(EnergyDbAdapter.COLUMN_NAME_SCREEN_DURATION,Screen_Initiation_Duration );
                     values.put(EnergyDbAdapter.COLUMN_NAME_MOBILE_DATA, mobileDataEnabled);
+                    values.put(EnergyDbAdapter.COLUMN_NAME_MOBILE_DATA_RECEIVE, Mobile_RX);
+                    values.put(EnergyDbAdapter.COLUMN_NAME_MOBILE_DATA_TRANSMIT, Mobile_TX);
                     values.put(EnergyDbAdapter.COLUMN_NAME_RADIO_TECHNOLOGY,  Radio_Technology);
                     values.put(EnergyDbAdapter.COLUMN_NAME_NETWORK_SPEED,  Network_Speed);
                     values.put(EnergyDbAdapter.COLUMN_NAME_DATA_STATE,  Data_State);
